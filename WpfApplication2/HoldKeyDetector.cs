@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
@@ -129,20 +125,7 @@ namespace WpfApplication2
             Console.WriteLine("letting go " + lParam);
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 
