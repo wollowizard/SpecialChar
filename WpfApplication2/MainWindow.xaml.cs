@@ -33,7 +33,7 @@ namespace WpfApplication2
         }        
 
         public void addCharacters(List<string> specialCharacters) {
-            int count = specialCharacters.Count;
+            int count = Math.Min(specialCharacters.Count, OPTIONS_NUMBER);
             for (int i = 0; i < count; i++) {
                 CharacterNumber control = characterNumberComponents[i];
                 control.setContent(specialCharacters[i], i + 1);
