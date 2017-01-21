@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="WpfApplication2.CharacterNumber"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfApplication2"
+             mc:Ignorable="d" 
+             d:DesignHeight="80" d:DesignWidth="40">
+    <Grid >
+        <Grid.RowDefinitions >
+            <RowDefinition Height="3*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>            
+        </Grid.ColumnDefinitions>
+        <Label Content="à" Name="characterLabel" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30" Foreground="#0940c0"></Label>
+        <Label Content="1" Name="numberLabel" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="15" Foreground="Gray"></Label>
+    </Grid>
+</UserControl>
