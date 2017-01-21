@@ -14,11 +14,13 @@ namespace WpfApplication2
         private const int OPTIONS_NUMBER = 6;
         private List<CharacterNumber> characterNumberComponents = new List<CharacterNumber>();
 
+        internal Controller controller { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
             InitializeCustomComponents();
-        }
+        }        
 
         private void InitializeCustomComponents()
         {
@@ -28,7 +30,7 @@ namespace WpfApplication2
                 control.MouseDown += Control_MouseDown;
                 characterNumberComponents.Add(control);
             }
-        }
+        }        
 
         public void addCharacters(List<string> specialCharacters) {
             int count = specialCharacters.Count;
@@ -47,18 +49,13 @@ namespace WpfApplication2
         {
             CharacterNumber senderControl = (CharacterNumber)sender;
             string content = (string)senderControl.characterLabel.Content;
-            hideAndType(content);
+            controller.SpecialCharacterClicked(content);
         }
         
         protected override void OnDeactivated(EventArgs e)
         {
             base.OnDeactivated(e);
-            this.Hide();            
-        }
-
-        private void hideAndType(string specialCharacter) {
-            this.OnDeactivated(null);
-            SendCharactersUtils.SendString(specialCharacter);
-        }
+            controller.WindowDeactivated();            
+        }        
     }
 }

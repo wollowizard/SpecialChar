@@ -7,14 +7,24 @@ namespace WpfApplication2
 {
     class HoldKeyDetector
     {
+        private static HoldKeyDetector instance;
 
-        private Action<int, string> holdingCallback = null;
-        private static Action<int, string> holdingCallbackStatic = null;
+        private HoldKeyDetector() { }
 
-        public HoldKeyDetector(Action<int, string> holdingCallback) {
-            this.holdingCallback = holdingCallback;
-            holdingCallbackStatic = holdingCallback;
+        public static HoldKeyDetector Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new HoldKeyDetector();
+                }
+                return instance;
+            }
         }
+
+        public Action<int> longPressCallback { get; set; }
+        public Action<int> shortPressCallback { get; set; }
 
 
         private const int WH_KEYBOARD_LL = 13;
@@ -43,7 +53,7 @@ namespace WpfApplication2
 
         private static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        public static long Timestamp()
+        private static long Timestamp()
         {
             DateTime localDateTime, univDateTime;
             localDateTime = DateTime.Now;
@@ -51,15 +61,21 @@ namespace WpfApplication2
             return (long)(univDateTime - UnixEpoch).TotalMilliseconds;
         }
 
-
         
         private static int holdingKey = -1;
         private static long firstPressOfHoldingKey = -1;
         private static Boolean isHoldingKey = false;
 
 
+        public Boolean listenForNumbersMode { get; set; } = false;
+
 
         private static Boolean keyDown(int code) {
+
+            if (Instance.listenForNumbersMode) {
+                Instance.shortPressCallback(code);
+                return false;
+            }
 
             if (code != holdingKey)
             {
@@ -74,14 +90,14 @@ namespace WpfApplication2
                     return false;
 
                 long diff = Timestamp() - firstPressOfHoldingKey;
-                if (diff > 1000) {
+                if (diff > 1000)
+                {
                     Console.WriteLine("Long pressed key " + code + " for ms " + diff);
                     isHoldingKey = true;
-                    char c1 = (char)1;
-                    string s = "";
-                    s += c1;
-                    holdingCallbackStatic(code, s);
+                    
+                    Instance.longPressCallback(code);
                 }
+                
                 return false;
             }
         }
@@ -108,11 +124,9 @@ namespace WpfApplication2
 
                 Console.WriteLine("isFirstPressOfKey " + isFirstPressOfKey);
                 if (!isFirstPressOfKey)
-                    return (IntPtr)1;
-                
-                                               
+                    return (IntPtr)1;          
             }
-
+            
 
             if (nCode >= 0 && wParam == (IntPtr)WM_KEYUP)
             {

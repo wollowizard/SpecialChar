@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controller.cs" />
     <Compile Include="SendCharactersUtils.cs" />
     <Page Include="CharacterNumber.xaml">
       <SubType>Designer</SubType>
