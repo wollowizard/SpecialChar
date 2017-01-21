@@ -89,6 +89,7 @@ namespace WpfApplication2
         {
             WindowDeactivated();
 
+            SendCharactersUtils.SendBackspace();
             SendCharactersUtils.SendString(specialCharacter);
         }
 

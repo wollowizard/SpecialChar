@@ -57,11 +57,52 @@ namespace WpfApplication2
                 }
             }
 
-            // Send all inputs together using a Windows API call.
-            
+            // Send all inputs together using a Windows API call.            
             SendInput((uint)inputs.Count, inputs.ToArray(), Marshal.SizeOf(typeof(INPUT)));
             
         }
+
+        public static void SendBackspace()
+        {
+            char c = (char)8;
+            // Construct list of inputs in order to send them through a single SendInput call at the end.
+            List<INPUT> inputs = new List<INPUT>();
+
+            // First send a key down, then a key up.
+            foreach (bool keyUp in new bool[] { false, true })
+            {
+                // INPUT is a multi-purpose structure which can be used 
+                // for synthesizing keystrokes, mouse motions, and button clicks.
+                INPUT input = new INPUT
+                {
+                    // Need a keyboard event.
+                    type = INPUT_KEYBOARD,
+                    u = new InputUnion
+                    {
+                        // KEYBDINPUT will contain all the information for a single keyboard event
+                        // (more precisely, for a single key-down or key-up).
+                        ki = new KEYBDINPUT
+                        {
+                            // Virtual-key code must be 0 since we are sending Unicode characters.
+                            wVk = c,
+                                                        
+                            // Indicate that we are sending a Unicode character.
+                            // Also indicate key-up on the second iteration.
+                            dwFlags = KEYEVENTF_UNICODE | (keyUp ? KEYEVENTF_KEYUP : 0),
+
+                            dwExtraInfo = GetMessageExtraInfo(),
+                        }
+                    }
+                };
+
+                // Add to the list (to be sent later).
+                inputs.Add(input);
+            }
+            // Send all inputs together using a Windows API call.            
+            SendInput((uint)inputs.Count, inputs.ToArray(), Marshal.SizeOf(typeof(INPUT)));
+
+        }
+
 
         const int INPUT_MOUSE = 0;
         const int INPUT_KEYBOARD = 1;
