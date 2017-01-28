@@ -90,7 +90,7 @@ namespace WpfApplication2
                     return false;
 
                 long diff = Timestamp() - firstPressOfHoldingKey;
-                if (diff > 1000)
+                if (diff > 700)
                 {
                     Console.WriteLine("Long pressed key " + code + " for ms " + diff);
                     isHoldingKey = true;
